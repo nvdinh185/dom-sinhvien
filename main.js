@@ -85,6 +85,7 @@ function onUpdate(id) {
     updateBtn.innerText = 'Sửa';
     if (!document.getElementById('update')) {
         createBtn.parentElement.appendChild(updateBtn);
+        createBtn.remove();
     }
 
     updateBtn.onclick = function () {
@@ -98,6 +99,7 @@ function onUpdate(id) {
         })
         students.splice(idx, 1, student);
         render(students);
+        updateBtn.parentElement.appendChild(createBtn);
         updateBtn.remove();
         name.value = '';
         address.value = '';
