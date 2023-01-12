@@ -36,17 +36,21 @@ const students = [
     }
 ];
 
+function renderStudent(student) {
+    return `<li class='student-${student.id}'>
+                <h2>Name: ${student.name}</h2>
+                <p>Address: ${student.address}</p>
+                <button onclick="onUpdate(${student.id})">Sửa</button>
+                <button onclick="onDelete(${student.id})">Xóa</button>
+            </li>`
+}
+
 function render(arrStudents) {
     var ulElement = document.querySelector('#list-students');
 
     var html = '';
     for (const student of arrStudents) {
-        html += `<li>
-                    <h2>Name: ${student.name}</h2>
-                    <p>Address: ${student.address}</p>
-                    <button onclick="onUpdate(${student.id})">Sửa</button>
-                    <button onclick="onDelete(${student.id})">Xóa</button>
-                </li>`
+        html += renderStudent(student);
     }
     ulElement.innerHTML = html;
 }
@@ -64,7 +68,8 @@ button.onclick = function () {
         address: address.value
     }
     students.unshift(newSt);
-    render(students);
+    var ulElement = document.querySelector('#list-students');
+    ulElement.innerHTML = renderStudent(newSt) + ulElement.innerHTML;
     name.value = '';
     address.value = '';
 }
@@ -98,7 +103,11 @@ function onUpdate(id) {
             return student.id === id;
         })
         students.splice(idx, 1, student);
-        render(students);
+        var htmls = renderStudent(student);
+        var studentItem = document.querySelector('.student-' + id);
+        if (studentItem) {
+            studentItem.innerHTML = htmls;
+        }
         updateBtn.parentElement.appendChild(createBtn);
         updateBtn.remove();
         name.value = '';
@@ -112,6 +121,9 @@ function onDelete(id) {
             return student.id === id;
         })
         students.splice(idx, 1);
-        render(students);
+        var studentItem = document.querySelector('.student-' + id);
+        if (studentItem) {
+            studentItem.remove();
+        }
     }
 }
