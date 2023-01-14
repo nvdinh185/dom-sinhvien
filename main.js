@@ -62,14 +62,14 @@ var myname = document.querySelector('input[name="name"]');
 var address = document.querySelector('input[name="address"]');
 
 button.onclick = function () {
-    var check = false;
+    var check = true;
     if (validation(myname)) {
-        check = true;
+        check = false;
     }
     if (validation(address)) {
-        check = true;
+        check = false;
     }
-    if (!check) {
+    if (check) {
         var newSt = {
             id: students.length + 1,
             name: myname.value,
