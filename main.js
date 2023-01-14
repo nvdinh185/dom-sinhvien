@@ -58,30 +58,37 @@ function render(arrStudents) {
 render(students);
 
 var button = document.querySelector('#create');
+var myname = document.querySelector('input[name="name"]');
+var address = document.querySelector('input[name="address"]');
 
 button.onclick = function () {
-    var name = document.querySelector('input[name="name"]');
-    var address = document.querySelector('input[name="address"]');
-    var newSt = {
-        id: students.length + 1,
-        name: name.value,
-        address: address.value
+    var check = false;
+    if (validation(myname)) {
+        check = true;
     }
-    students.unshift(newSt);
-    var ulElement = document.querySelector('#list-students');
-    ulElement.innerHTML = renderStudent(newSt) + ulElement.innerHTML;
-    name.value = '';
-    address.value = '';
+    if (validation(address)) {
+        check = true;
+    }
+    if (!check) {
+        var newSt = {
+            id: students.length + 1,
+            name: myname.value,
+            address: address.value
+        }
+        students.unshift(newSt);
+        var ulElement = document.querySelector('#list-students');
+        ulElement.innerHTML = renderStudent(newSt) + ulElement.innerHTML;
+        myname.value = '';
+        address.value = '';
+    }
 }
 
 function onUpdate(id) {
     var student = students.find(function (st) {
         return st.id === id;
     })
-    var name = document.querySelector('input[name="name"]');
-    var address = document.querySelector('input[name="address"]');
 
-    name.value = student.name;
+    myname.value = student.name;
     address.value = student.address;
 
     var createBtn = document.querySelector('#create');
@@ -96,7 +103,7 @@ function onUpdate(id) {
     updateBtn.onclick = function () {
         var student = {
             id: id,
-            name: name.value,
+            name: myname.value,
             address: address.value
         }
         var idx = students.findIndex(function (student) {
@@ -110,7 +117,7 @@ function onUpdate(id) {
         }
         updateBtn.parentElement.appendChild(createBtn);
         updateBtn.remove();
-        name.value = '';
+        myname.value = '';
         address.value = '';
     }
 }
@@ -125,5 +132,37 @@ function onDelete(id) {
         if (studentItem) {
             studentItem.remove();
         }
+    }
+}
+
+myname.onblur = function () {
+    if (this.value === '') {
+        this.parentElement.querySelector('.form-message')
+            .setAttribute('style', 'display: block; color: red; font-style: italic;');
+    } else {
+        this.parentElement.querySelector('.form-message')
+            .setAttribute('style', 'display: none;');
+    }
+}
+
+address.onblur = function () {
+    if (this.value === '') {
+        this.parentElement.querySelector('.form-message')
+            .setAttribute('style', 'display: block; color: red; font-style: italic;');
+    } else {
+        this.parentElement.querySelector('.form-message')
+            .setAttribute('style', 'display: none;');
+    }
+}
+
+function validation(input) {
+    if (input.value === '') {
+        input.parentElement.querySelector('.form-message')
+            .setAttribute('style', 'display: block; color: red; font-style: italic;');
+        return true;
+    } else {
+        input.parentElement.querySelector('.form-message')
+            .setAttribute('style', 'display: none;');
+        return false;
     }
 }
