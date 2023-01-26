@@ -48,22 +48,22 @@ function renderStudent(student) {
 function render(arrStudents) {
     var ulElement = document.querySelector('#list-students');
 
-    var html = '';
+    var htmls = '';
     for (const student of arrStudents) {
-        html += renderStudent(student);
+        htmls += renderStudent(student);
     }
-    ulElement.innerHTML = html;
+    ulElement.innerHTML = htmls;
 }
 
 render(students);
 
 var button = document.querySelector('#create');
-var myname = document.querySelector('input[name="name"]');
+var stName = document.querySelector('input[name="name"]');
 var address = document.querySelector('input[name="address"]');
 
 button.onclick = function () {
     var check = true;
-    if (validation(myname)) {
+    if (validation(stName)) {
         check = false;
     }
     if (validation(address)) {
@@ -72,13 +72,13 @@ button.onclick = function () {
     if (check) {
         var newSt = {
             id: students.length + 1,
-            name: myname.value,
+            name: stName.value,
             address: address.value
         }
         students.unshift(newSt);
         var ulElement = document.querySelector('#list-students');
         ulElement.innerHTML = renderStudent(newSt) + ulElement.innerHTML;
-        myname.value = '';
+        stName.value = '';
         address.value = '';
     }
 }
@@ -88,7 +88,7 @@ function onUpdate(id) {
         return st.id === id;
     })
 
-    myname.value = student.name;
+    stName.value = student.name;
     address.value = student.address;
 
     var createBtn = document.querySelector('#create');
@@ -103,7 +103,7 @@ function onUpdate(id) {
     updateBtn.onclick = function () {
         var student = {
             id: id,
-            name: myname.value,
+            name: stName.value,
             address: address.value
         }
         var idx = students.findIndex(function (student) {
@@ -117,7 +117,7 @@ function onUpdate(id) {
         }
         updateBtn.parentElement.appendChild(createBtn);
         updateBtn.remove();
-        myname.value = '';
+        stName.value = '';
         address.value = '';
     }
 }
@@ -135,7 +135,7 @@ function onDelete(id) {
     }
 }
 
-myname.onblur = function () {
+stName.onblur = function () {
     if (this.value === '') {
         this.parentElement.querySelector('.form-message')
             .setAttribute('style', 'display: block; color: red; font-style: italic;');
