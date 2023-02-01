@@ -135,23 +135,15 @@ function onDelete(id) {
     }
 }
 
-stName.onblur = function () {
-    if (this.value === '') {
-        this.parentElement.querySelector('.form-message')
-            .setAttribute('style', 'display: block; color: red; font-style: italic;');
-    } else {
-        this.parentElement.querySelector('.form-message')
-            .setAttribute('style', 'display: none;');
-    }
-}
-
-address.onblur = function () {
-    if (this.value === '') {
-        this.parentElement.querySelector('.form-message')
-            .setAttribute('style', 'display: block; color: red; font-style: italic;');
-    } else {
-        this.parentElement.querySelector('.form-message')
-            .setAttribute('style', 'display: none;');
+function handleBlurInput(input) {
+    input.onblur = function () {
+        if (this.value === '') {
+            this.parentElement.querySelector('.form-message')
+                .setAttribute('style', 'display: block; color: red; font-style: italic;');
+        } else {
+            this.parentElement.querySelector('.form-message')
+                .setAttribute('style', 'display: none;');
+        }
     }
 }
 
@@ -166,3 +158,6 @@ function validation(input) {
         return false;
     }
 }
+
+handleBlurInput(stName);
+handleBlurInput(address);
