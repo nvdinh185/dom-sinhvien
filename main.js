@@ -57,11 +57,11 @@ function render(arrStudents) {
 
 render(students);
 
-var button = document.querySelector('#create');
+var createBtn = document.querySelector('#create');
 var stName = document.querySelector('input[name="name"]');
 var address = document.querySelector('input[name="address"]');
 
-button.onclick = function () {
+createBtn.onclick = function () {
     var check = true;
     if (validation(stName)) {
         check = false;
@@ -91,7 +91,6 @@ function onUpdate(id) {
     stName.value = student.name;
     address.value = student.address;
 
-    var createBtn = document.querySelector('#create');
     var updateBtn = document.createElement('button');
     updateBtn.id = 'update';
     updateBtn.innerText = 'Sửa';
