@@ -36,6 +36,11 @@ const students = [
     }
 ];
 
+/**
+ * Render ra từng sinh viên
+ * @param {*} student 
+ * @returns 
+ */
 function renderStudent(student) {
     return `<li class='student-${student.id}'>
                 <h2>Name: ${student.name}</h2>
@@ -45,6 +50,10 @@ function renderStudent(student) {
             </li>`
 }
 
+/**
+ * Render ra mảng sinh viên
+ * @param {*} arrStudents 
+ */
 function render(arrStudents) {
     var ulElement = document.querySelector('#list-students');
 
@@ -61,6 +70,7 @@ var createBtn = document.querySelector('#create');
 var stName = document.querySelector('input[name="name"]');
 var address = document.querySelector('input[name="address"]');
 
+// Xử lý khi kích vào button Thêm
 createBtn.onclick = function () {
     var check = true;
     if (validation(stName)) {
@@ -83,7 +93,9 @@ createBtn.onclick = function () {
     }
 }
 
+// Xử lý khi kích vào button Sửa
 function onUpdate(id) {
+    // tìm sinh viên muốn sửa
     var student = students.find(function (st) {
         return st.id === id;
     })
@@ -121,6 +133,7 @@ function onUpdate(id) {
     }
 }
 
+// Xử lý khi kích vào button Xóa
 function onDelete(id) {
     if (confirm("Bạn có chắc muốn xóa?")) {
         var idx = students.findIndex(function (student) {
