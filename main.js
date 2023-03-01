@@ -122,9 +122,9 @@ function onUpdate(id) {
         })
         students.splice(idx, 1, student);
         var htmls = renderStudent(student);
-        var studentItem = document.querySelector('.student-' + id);
-        if (studentItem) {
-            studentItem.innerHTML = htmls;
+        var studentElement = document.querySelector('.student-' + id);
+        if (studentElement) {
+            studentElement.innerHTML = htmls;
         }
         updateBtn.parentElement.appendChild(createBtn);
         updateBtn.remove();
@@ -148,25 +148,27 @@ function onDelete(id) {
 }
 
 function handleBlurInput(input) {
+    var errorElement = input.parentElement.querySelector('.form-message');
     input.onblur = function () {
-        if (this.value === '') {
-            this.parentElement.querySelector('.form-message')
-                .setAttribute('style', 'display: block; color: red; font-style: italic;');
+        if (input.value === '') {
+            errorElement.setAttribute('style', 'display: block; color: red; font-style: italic;');
         } else {
-            this.parentElement.querySelector('.form-message')
-                .setAttribute('style', 'display: none;');
+            errorElement.setAttribute('style', 'display: none;');
         }
     }
 }
 
 function validation(input) {
+    var errorElement = input.parentElement.querySelector('.form-message');
     if (input.value === '') {
-        input.parentElement.querySelector('.form-message')
-            .setAttribute('style', 'display: block; color: red; font-style: italic;');
+        Object.assign(errorElement.style, {
+            display: 'block',
+            color: 'red',
+            fontStyle: 'italic'
+        })
         return true;
     } else {
-        input.parentElement.querySelector('.form-message')
-            .setAttribute('style', 'display: none;');
+        errorElement.setAttribute('style', 'display: none;');
         return false;
     }
 }
