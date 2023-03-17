@@ -1,0 +1,29 @@
+{
+  "students": [
+    {
+      "id": 1,
+      "name": "Hung",
+      "address": "hue"
+    },
+    {
+      "id": 3,
+      "name": "Dinh",
+      "address": "hue"
+    },
+    {
+      "id": 4,
+      "name": "Anh",
+      "address": "hue"
+    },
+    {
+      "id": 5,
+      "name": "Binh",
+      "address": "da nang"
+    },
+    {
+      "id": 6,
+      "name": "Dinh Nguyen",
+      "address": "999"
+    }
+  ]
+}
