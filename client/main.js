@@ -3,9 +3,10 @@ const studentsApi = "http://localhost:3001/students";
 var createBtn = document.querySelector('#create');
 var stName = document.querySelector('input[name="name"]');
 var address = document.querySelector('input[name="address"]');
+var students = [];
 
 (async function () {
-    var students = await axios.get(studentsApi);
+    students = await axios.get(studentsApi);
     students = students.data;
 
     /**
@@ -37,30 +38,30 @@ var address = document.querySelector('input[name="address"]');
     }
 
     render(students);
+})()
 
-    // Xử lý khi kích vào button Thêm
-    createBtn.onclick = async function () {
-        var check = true;
-        if (validation(stName)) {
-            check = false;
+// Xử lý khi kích vào button Thêm
+createBtn.onclick = async function () {
+    var check = true;
+    if (validation(stName)) {
+        check = false;
+    }
+    if (validation(address)) {
+        check = false;
+    }
+    if (check) {
+        var newSt = {
+            id: students.length + 1,
+            name: stName.value,
+            address: address.value
         }
-        if (validation(address)) {
-            check = false;
-        }
-        if (check) {
-            var newSt = {
-                id: students.length + 1,
-                name: stName.value,
-                address: address.value
-            }
 
-            await axios({
-                method: "POST",
-                url: studentsApi,
-                data: JSON.stringify(newSt),
-                headers: { "Content-Type": "application/json" },
-            })
-        }
+        await axios({
+            method: "POST",
+            url: studentsApi,
+            data: JSON.stringify(newSt),
+            headers: { "Content-Type": "application/json" },
+        })
     }
 
     function handleBlurInput(input) {
@@ -91,13 +92,10 @@ var address = document.querySelector('input[name="address"]');
 
     handleBlurInput(stName);
     handleBlurInput(address);
-
-})()
+}
 
 // Xử lý khi kích vào button Sửa
 async function onUpdate(id) {
-    var students = await axios.get(studentsApi);
-    students = students.data;
     // tìm sinh viên muốn sửa
     var student = students.find(function (st) {
         return st.id === id;
