@@ -34,7 +34,7 @@ const students = [
         name: "Binh",
         address: "da nang"
     }
-];
+]
 
 /**
  * Render ra từng sinh viên
