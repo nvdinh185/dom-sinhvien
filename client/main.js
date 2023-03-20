@@ -16,11 +16,11 @@ var students = [];
      */
     function renderStudent(student) {
         return `<li class='student-${student.id}'>
-                <h2>Name: ${student.name}</h2>
-                <p>Address: ${student.address}</p>
-                <button onclick="onUpdate(${student.id})">Sửa</button>
-                <button onclick="onDelete(${student.id})">Xóa</button>
-            </li>`
+                    <h2>Name: ${student.name}</h2>
+                    <p>Address: ${student.address}</p>
+                    <button onclick="onUpdate(${student.id})">Sửa</button>
+                    <button onclick="onDelete(${student.id})">Xóa</button>
+                </li>`
     }
 
     /**
@@ -64,17 +64,6 @@ createBtn.onclick = async function () {
         })
     }
 
-    function handleBlurInput(input) {
-        var errorElement = input.parentElement.querySelector('.form-message');
-        input.onblur = function () {
-            if (input.value === '') {
-                errorElement.setAttribute('style', 'display: block; color: red; font-style: italic;');
-            } else {
-                errorElement.setAttribute('style', 'display: none;');
-            }
-        }
-    }
-
     function validation(input) {
         var errorElement = input.parentElement.querySelector('.form-message');
         if (input.value === '') {
@@ -89,10 +78,21 @@ createBtn.onclick = async function () {
             return false;
         }
     }
-
-    handleBlurInput(stName);
-    handleBlurInput(address);
 }
+
+function handleBlurInput(input) {
+    var errorElement = input.parentElement.querySelector('.form-message');
+    input.onblur = function () {
+        if (input.value === '') {
+            errorElement.setAttribute('style', 'display: block; color: red; font-style: italic;');
+        } else {
+            errorElement.setAttribute('style', 'display: none;');
+        }
+    }
+}
+
+handleBlurInput(stName);
+handleBlurInput(address);
 
 // Xử lý khi kích vào button Sửa
 async function onUpdate(id) {
