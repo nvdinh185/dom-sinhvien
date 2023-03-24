@@ -23,21 +23,12 @@ var students = [];
                 </li>`
     }
 
-    /**
-     * Render ra mảng sinh viên
-     * @param {*} arrStudents 
-     */
-    function render(arrStudents) {
-        var ulElement = document.querySelector('#list-students');
+    var ulElement = document.querySelector('#list-students');
 
-        var htmls = '';
-        for (const student of arrStudents) {
-            htmls += renderStudent(student);
-        }
-        ulElement.innerHTML = htmls;
-    }
-
-    render(students);
+    var htmls = students.map(function (student) {
+        return renderStudent(student);
+    })
+    ulElement.innerHTML = htmls;
 })()
 
 // Xử lý khi kích vào button Thêm
