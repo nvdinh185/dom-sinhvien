@@ -152,6 +152,7 @@ function handleBlurInput(input) {
     input.onblur = function () {
         if (input.value === '') {
             errorElement.setAttribute('style', 'display: block; color: red; font-style: italic;');
+            errorElement.innerText = 'Yêu cầu nhập!';
         } else {
             errorElement.setAttribute('style', 'display: none;');
         }
@@ -166,6 +167,7 @@ function validation(input) {
             color: 'red',
             fontStyle: 'italic'
         })
+        errorElement.innerText = 'Yêu cầu nhập!';
         return true;
     } else {
         errorElement.setAttribute('style', 'display: none;');
