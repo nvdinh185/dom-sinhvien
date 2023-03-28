@@ -6,29 +6,14 @@
       "address": "hue"
     },
     {
-      "id": 3,
+      "id": 2,
       "name": "Dinh",
       "address": "hue"
     },
     {
-      "id": 4,
+      "id": 3,
       "name": "Anh",
       "address": "hue"
-    },
-    {
-      "id": 5,
-      "name": "Binh",
-      "address": "da nang"
-    },
-    {
-      "id": 2,
-      "name": "Dinh Nguyen",
-      "address": "999"
-    },
-    {
-      "id": 6,
-      "name": "dinh",
-      "address": "uuu"
     }
   ]
 }

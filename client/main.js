@@ -5,23 +5,23 @@ var stName = document.querySelector('input[name="name"]');
 var address = document.querySelector('input[name="address"]');
 var students = [];
 
+/**
+ * Render ra từng sinh viên
+ * @param {*} student 
+ * @returns 
+ */
+function renderStudent(student) {
+    return `<li class='student-${student.id}'>
+                <h2>Name: ${student.name}</h2>
+                <p>Address: ${student.address}</p>
+                <button onclick="onUpdate(${student.id})">Sửa</button>
+                <button onclick="onDelete(${student.id})">Xóa</button>
+            </li>`
+}
+
 (async function () {
     students = await axios.get(studentsApi);
     students = students.data;
-
-    /**
-     * Render ra từng sinh viên
-     * @param {*} student 
-     * @returns 
-     */
-    function renderStudent(student) {
-        return `<li class='student-${student.id}'>
-                    <h2>Name: ${student.name}</h2>
-                    <p>Address: ${student.address}</p>
-                    <button onclick="onUpdate(${student.id})">Sửa</button>
-                    <button onclick="onDelete(${student.id})">Xóa</button>
-                </li>`
-    }
 
     var ulElement = document.querySelector('#list-students');
 
@@ -47,12 +47,19 @@ createBtn.onclick = async function () {
             address: address.value
         }
 
-        await axios({
+        var result = await axios({
             method: "POST",
             url: studentsApi,
             data: JSON.stringify(newSt),
             headers: { "Content-Type": "application/json" },
         })
+
+        result = result.data;
+        students.unshift(result);
+        var ulElement = document.querySelector('#list-students');
+        ulElement.innerHTML = renderStudent(result) + ulElement.innerHTML;
+        stName.value = '';
+        address.value = '';
     }
 
     function validation(input) {
@@ -109,12 +116,27 @@ async function onUpdate(id) {
             name: stName.value,
             address: address.value
         }
-        await axios({
+        var result = await axios({
             method: "PUT",
             url: studentsApi + "/" + id,
             data: JSON.stringify(student),
             headers: { "Content-Type": "application/json" },
         })
+
+        result = result.data;
+        var idx = students.findIndex(function (student) {
+            return student.id === id;
+        })
+        students.splice(idx, 1, result);
+        var htmls = renderStudent(result);
+        var studentElement = document.querySelector('.student-' + id);
+        if (studentElement) {
+            studentElement.innerHTML = htmls;
+        }
+        updateBtn.parentElement.appendChild(createBtn);
+        updateBtn.remove();
+        stName.value = '';
+        address.value = '';
     }
 }
 
@@ -126,5 +148,9 @@ async function onDelete(id) {
             url: studentsApi + '/' + id,
             headers: { "Content-Type": "application/json" }
         })
+        var studentElement = document.querySelector('.student-' + id);
+        if (studentElement) {
+            studentElement.remove();
+        }
     }
 }
