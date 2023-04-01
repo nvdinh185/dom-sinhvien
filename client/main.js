@@ -1,8 +1,8 @@
 const studentsApi = "http://localhost:3001/students";
 
-var createBtn = document.querySelector('#create');
-var stName = document.querySelector('input[name="name"]');
-var address = document.querySelector('input[name="address"]');
+var createBtn = $('#create');
+var stName = $('input[name="name"]');
+var address = $('input[name="address"]');
 var students = [];
 
 /**
@@ -23,16 +23,16 @@ function renderStudent(student) {
     students = await axios.get(studentsApi);
     students = students.data;
 
-    var ulElement = document.querySelector('#list-students');
+    var ulElement = $('#list-students');
 
     var htmls = students.map(function (student) {
         return renderStudent(student);
     })
-    ulElement.innerHTML = htmls;
+    ulElement.html(htmls);
 })()
 
 // Xử lý khi kích vào button Thêm
-createBtn.onclick = async function () {
+createBtn.click(async function () {
     var check = true;
     if (validation(stName)) {
         check = false;
@@ -43,8 +43,8 @@ createBtn.onclick = async function () {
     if (check) {
         var newSt = {
             id: students.length + 1,
-            name: stName.value,
-            address: address.value
+            name: stName.val(),
+            address: address.val()
         }
 
         var result = await axios({
@@ -58,13 +58,13 @@ createBtn.onclick = async function () {
         students.unshift(result);
         var ulElement = document.querySelector('#list-students');
         ulElement.innerHTML = renderStudent(result) + ulElement.innerHTML;
-        stName.value = '';
-        address.value = '';
+        stName.val('');
+        address.val('');
     }
 
     function validation(input) {
-        var errorElement = input.parentElement.querySelector('.form-message');
-        if (input.value === '') {
+        var errorElement = input.parent().children()[3];
+        if (input.val() === '') {
             Object.assign(errorElement.style, {
                 display: 'block',
                 color: 'red',
@@ -72,21 +72,21 @@ createBtn.onclick = async function () {
             })
             return true;
         } else {
-            errorElement.setAttribute('style', 'display: none;');
+            $(errorElement).attr('style', 'display: none;');
             return false;
         }
     }
-}
+})
 
 function handleBlurInput(input) {
-    var errorElement = input.parentElement.querySelector('.form-message');
-    input.onblur = function () {
-        if (input.value === '') {
-            errorElement.setAttribute('style', 'display: block; color: red; font-style: italic;');
+    var errorElement = input.parent().children()[3];
+    input.blur(function () {
+        if (input.val() === '') {
+            $(errorElement).attr('style', 'display: block; color: red; font-style: italic;');
         } else {
-            errorElement.setAttribute('style', 'display: none;');
+            $(errorElement).attr('style', 'display: none;');
         }
-    }
+    })
 }
 
 handleBlurInput(stName);
@@ -99,22 +99,18 @@ async function onUpdate(id) {
         return st.id === id;
     })
 
-    stName.value = student.name;
-    address.value = student.address;
+    stName.val(student.name);
+    address.val(student.address);
 
-    var updateBtn = document.createElement('button');
-    updateBtn.id = 'update';
-    updateBtn.innerText = 'Sửa';
-    if (!document.getElementById('update')) {
-        createBtn.parentElement.appendChild(updateBtn);
-        createBtn.remove();
-    }
+    var updateBtn = $("#update");
+    $(updateBtn).attr('style', 'display: block;');
+    $(createBtn).attr('style', 'display: none');
 
-    updateBtn.onclick = async function () {
+    updateBtn.click(async function () {
         var student = {
             id: id,
-            name: stName.value,
-            address: address.value
+            name: stName.val(),
+            address: address.val()
         }
         var result = await axios({
             method: "PUT",
@@ -129,15 +125,15 @@ async function onUpdate(id) {
         })
         students.splice(idx, 1, result);
         var htmls = renderStudent(result);
-        var studentElement = document.querySelector('.student-' + id);
+        var studentElement = $('.student-' + id);
         if (studentElement) {
-            studentElement.innerHTML = htmls;
+            studentElement.html(htmls);
         }
-        updateBtn.parentElement.appendChild(createBtn);
-        updateBtn.remove();
-        stName.value = '';
-        address.value = '';
-    }
+        $(updateBtn).attr('style', 'display: none;');
+        $(createBtn).attr('style', 'display: block;');
+        stName.val('');
+        address.val('');
+    })
 }
 
 // Xử lý khi kích vào button Xóa
@@ -148,7 +144,7 @@ async function onDelete(id) {
             url: studentsApi + '/' + id,
             headers: { "Content-Type": "application/json" }
         })
-        var studentElement = document.querySelector('.student-' + id);
+        var studentElement = $('.student-' + id);
         if (studentElement) {
             studentElement.remove();
         }
