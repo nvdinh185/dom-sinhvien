@@ -56,8 +56,8 @@ createBtn.click(async function () {
 
         result = result.data;
         students.unshift(result);
-        var ulElement = document.querySelector('#list-students');
-        ulElement.innerHTML = renderStudent(result) + ulElement.innerHTML;
+        var ulElement = $('#list-students');
+        ulElement.html(renderStudent(result) + ulElement.html());
         stName.val('');
         address.val('');
     }
