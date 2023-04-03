@@ -131,7 +131,7 @@ async function onUpdate(id) {
         var htmls = renderStudent(result);
         var studentElement = document.querySelector('.student-' + id);
         if (studentElement) {
-            studentElement.innerHTML = htmls;
+            studentElement.outerHTML = htmls;
         }
         updateBtn.parentElement.appendChild(createBtn);
         updateBtn.remove();
