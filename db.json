@@ -1,29 +1,19 @@
 {
   "students": [
     {
-      "id": 1,
-      "name": "Hung",
-      "address": "hue"
-    },
-    {
-      "id": 2,
-      "name": "Dinh Nguyen",
+      "id": "6de2-bd9f-c63-1e28",
+      "name": "dinh-new",
       "address": "popo"
     },
     {
-      "id": 3,
-      "name": "Nguyen Van Teo",
-      "address": "popopu"
-    },
-    {
-      "id": 4,
+      "id": "f396-695a-f51-6122",
       "name": "Le Thi Be",
-      "address": "popo"
+      "address": "hehe"
     },
     {
-      "id": 5,
-      "name": "dinh",
-      "address": "popo"
+      "id": "6df3-e328-6ad-7030",
+      "name": "Nguyen Van Teo",
+      "address": "tete"
     }
   ]
 }

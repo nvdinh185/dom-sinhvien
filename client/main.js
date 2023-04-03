@@ -1,9 +1,17 @@
 const studentsApi = "http://localhost:3001/students";
 
 var createBtn = $('#create');
+var updateBtn = $("#update");
 var stName = $('input[name="name"]');
 var address = $('input[name="address"]');
 var students = [];
+
+function generateUuid() {
+    return 'xxxx-xxxx-xxx-xxxx'.replace(/[x]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
 
 /**
  * Render ra từng sinh viên
@@ -14,8 +22,8 @@ function renderStudent(student) {
     return `<li class='student-${student.id}'>
                 <h2>Name: ${student.name}</h2>
                 <p>Address: ${student.address}</p>
-                <button onclick="onUpdate(${student.id})">Sửa</button>
-                <button onclick="onDelete(${student.id})">Xóa</button>
+                <button onclick="onUpdate('${student.id}')">Sửa</button>
+                <button onclick="onDelete('${student.id}')">Xóa</button>
             </li>`
 }
 
@@ -42,7 +50,7 @@ createBtn.click(async function () {
     }
     if (check) {
         var newSt = {
-            id: students.length + 1,
+            id: generateUuid(),
             name: stName.val(),
             address: address.val()
         }
@@ -55,9 +63,9 @@ createBtn.click(async function () {
         })
 
         result = result.data;
-        students.unshift(result);
+        students.push(result);
         var ulElement = $('#list-students');
-        ulElement.html(renderStudent(result) + ulElement.html());
+        ulElement.html(ulElement.html() + renderStudent(result));
         stName.val('');
         address.val('');
     }
@@ -92,49 +100,50 @@ function handleBlurInput(input) {
 handleBlurInput(stName);
 handleBlurInput(address);
 
+var idEd;
 // Xử lý khi kích vào button Sửa
 async function onUpdate(id) {
+    idEd = id;
     // tìm sinh viên muốn sửa
     var student = students.find(function (st) {
-        return st.id === id;
+        return st.id === idEd;
     })
 
     stName.val(student.name);
     address.val(student.address);
-
-    var updateBtn = $("#update");
     $(updateBtn).attr('style', 'display: block;');
     $(createBtn).attr('style', 'display: none');
-
-    updateBtn.click(async function () {
-        var student = {
-            id: id,
-            name: stName.val(),
-            address: address.val()
-        }
-        var result = await axios({
-            method: "PUT",
-            url: studentsApi + "/" + id,
-            data: JSON.stringify(student),
-            headers: { "Content-Type": "application/json" },
-        })
-
-        result = result.data;
-        var idx = students.findIndex(function (student) {
-            return student.id === id;
-        })
-        students.splice(idx, 1, result);
-        var htmls = renderStudent(result);
-        var studentElement = $('.student-' + id);
-        if (studentElement) {
-            studentElement.html(htmls);
-        }
-        $(updateBtn).attr('style', 'display: none;');
-        $(createBtn).attr('style', 'display: block;');
-        stName.val('');
-        address.val('');
-    })
 }
+
+updateBtn.click(async function () {
+    var student = {
+        id: idEd,
+        name: stName.val(),
+        address: address.val()
+    }
+    var result = await axios({
+        method: "PUT",
+        url: studentsApi + "/" + idEd,
+        data: JSON.stringify(student),
+        headers: { "Content-Type": "application/json" },
+    })
+
+    result = result.data;
+
+    var idx = students.findIndex(function (student) {
+        return student.id === idEd;
+    })
+    students.splice(idx, 1, result);
+    var htmls = renderStudent(result);
+    var studentElement = $('.student-' + idEd);
+    if (studentElement) {
+        studentElement.replaceWith(htmls);
+    }
+    stName.val('');
+    address.val('');
+    $(updateBtn).attr('style', 'display: none;');
+    $(createBtn).attr('style', 'display: block;');
+})
 
 // Xử lý khi kích vào button Xóa
 async function onDelete(id) {
