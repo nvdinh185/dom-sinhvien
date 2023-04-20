@@ -33,9 +33,10 @@ function renderStudent(student) {
 
     var ulElement = $('#list-students');
 
-    var htmls = students.map(function (student) {
-        return renderStudent(student);
-    })
+    var htmls = '';
+    for (const student of students) {
+        htmls += renderStudent(student);
+    }
     ulElement.html(htmls);
 })()
 
@@ -78,6 +79,7 @@ createBtn.click(async function () {
                 color: 'red',
                 fontStyle: 'italic'
             })
+            $(errorElement).text('Yêu cầu nhập!');
             return true;
         } else {
             $(errorElement).attr('style', 'display: none;');
@@ -91,6 +93,7 @@ function handleBlurInput(input) {
     input.blur(function () {
         if (input.val() === '') {
             $(errorElement).attr('style', 'display: block; color: red; font-style: italic;');
+            $(errorElement).text('Yêu cầu nhập!');
         } else {
             $(errorElement).attr('style', 'display: none;');
         }
