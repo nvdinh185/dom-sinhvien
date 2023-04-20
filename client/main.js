@@ -1,9 +1,17 @@
 const studentsApi = "http://localhost:3001/students";
 
 var createBtn = document.querySelector('#create');
+var updateBtn = document.querySelector('#update');
 var stName = document.querySelector('input[name="name"]');
 var address = document.querySelector('input[name="address"]');
 var students = [];
+
+function generateUuid() {
+    return 'xxxx-xxxx-xxx-xxxx'.replace(/[x]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
 
 /**
  * Render ra từng sinh viên
@@ -14,8 +22,8 @@ function renderStudent(student) {
     return `<li class='student-${student.id}'>
                 <h2>Name: ${student.name}</h2>
                 <p>Address: ${student.address}</p>
-                <button onclick="onUpdate(${student.id})">Sửa</button>
-                <button onclick="onDelete(${student.id})">Xóa</button>
+                <button onclick="onUpdate('${student.id}')">Sửa</button>
+                <button onclick="onDelete('${student.id}')">Xóa</button>
             </li>`
 }
 
@@ -25,9 +33,10 @@ function renderStudent(student) {
 
     var ulElement = document.querySelector('#list-students');
 
-    var htmls = students.map(function (student) {
-        return renderStudent(student);
-    })
+    var htmls = '';
+    for (const student of students) {
+        htmls += renderStudent(student);
+    }
     ulElement.innerHTML = htmls;
 })()
 
@@ -42,7 +51,7 @@ createBtn.onclick = async function () {
     }
     if (check) {
         var newSt = {
-            id: students.length + 1,
+            id: generateUuid(),
             name: stName.value,
             address: address.value
         }
@@ -55,9 +64,9 @@ createBtn.onclick = async function () {
         })
 
         result = result.data;
-        students.unshift(result);
+        students.push(result);
         var ulElement = document.querySelector('#list-students');
-        ulElement.innerHTML = renderStudent(result) + ulElement.innerHTML;
+        ulElement.innerHTML += renderStudent(result);
         stName.value = '';
         address.value = '';
     }
@@ -70,6 +79,7 @@ createBtn.onclick = async function () {
                 color: 'red',
                 fontStyle: 'italic'
             })
+            errorElement.innerText = 'Yêu cầu nhập!';
             return true;
         } else {
             errorElement.setAttribute('style', 'display: none;');
@@ -83,6 +93,7 @@ function handleBlurInput(input) {
     input.onblur = function () {
         if (input.value === '') {
             errorElement.setAttribute('style', 'display: block; color: red; font-style: italic;');
+            errorElement.innerText = 'Yêu cầu nhập!';
         } else {
             errorElement.setAttribute('style', 'display: none;');
         }
@@ -92,52 +103,49 @@ function handleBlurInput(input) {
 handleBlurInput(stName);
 handleBlurInput(address);
 
+var idEd;
 // Xử lý khi kích vào button Sửa
 async function onUpdate(id) {
+    idEd = id;
     // tìm sinh viên muốn sửa
     var student = students.find(function (st) {
-        return st.id === id;
+        return st.id === idEd;
     })
 
     stName.value = student.name;
     address.value = student.address;
 
-    var updateBtn = document.createElement('button');
-    updateBtn.id = 'update';
-    updateBtn.innerText = 'Sửa';
-    if (!document.getElementById('update')) {
-        createBtn.parentElement.appendChild(updateBtn);
-        createBtn.remove();
-    }
+    createBtn.setAttribute('style', 'display: none');
+    updateBtn.setAttribute('style', 'display: block');
+}
 
-    updateBtn.onclick = async function () {
-        var student = {
-            id: id,
-            name: stName.value,
-            address: address.value
-        }
-        var result = await axios({
-            method: "PUT",
-            url: studentsApi + "/" + id,
-            data: JSON.stringify(student),
-            headers: { "Content-Type": "application/json" },
-        })
-
-        result = result.data;
-        var idx = students.findIndex(function (student) {
-            return student.id === id;
-        })
-        students.splice(idx, 1, result);
-        var htmls = renderStudent(result);
-        var studentElement = document.querySelector('.student-' + id);
-        if (studentElement) {
-            studentElement.outerHTML = htmls;
-        }
-        updateBtn.parentElement.appendChild(createBtn);
-        updateBtn.remove();
-        stName.value = '';
-        address.value = '';
+updateBtn.onclick = async function () {
+    var student = {
+        id: idEd,
+        name: stName.value,
+        address: address.value
     }
+    var result = await axios({
+        method: "PUT",
+        url: studentsApi + "/" + idEd,
+        data: JSON.stringify(student),
+        headers: { "Content-Type": "application/json" },
+    })
+
+    result = result.data;
+    var idx = students.findIndex(function (student) {
+        return student.id === idEd;
+    })
+    students.splice(idx, 1, result);
+    var htmls = renderStudent(result);
+    var studentElement = document.querySelector('.student-' + idEd);
+    if (studentElement) {
+        studentElement.outerHTML = htmls;
+    }
+    createBtn.setAttribute('style', 'display: none');
+    updateBtn.setAttribute('style', 'display: block');
+    stName.value = '';
+    address.value = '';
 }
 
 // Xử lý khi kích vào button Xóa
