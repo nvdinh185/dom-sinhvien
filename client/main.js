@@ -1,4 +1,4 @@
-const studentsApi = "http://localhost:3001/students";
+const studentsApi = "http://localhost:3000/students";
 
 var createBtn = $('#create');
 var updateBtn = $("#update");
@@ -119,7 +119,7 @@ async function onUpdate(id) {
 }
 
 updateBtn.click(async function () {
-    var student = {
+    var edStudent = {
         id: idEd,
         name: stName.val(),
         address: address.val()
@@ -127,7 +127,7 @@ updateBtn.click(async function () {
     var result = await axios({
         method: "PUT",
         url: studentsApi + "/" + idEd,
-        data: JSON.stringify(student),
+        data: JSON.stringify(edStudent),
         headers: { "Content-Type": "application/json" },
     })
 
@@ -136,8 +136,8 @@ updateBtn.click(async function () {
     var idx = students.findIndex(function (student) {
         return student.id === idEd;
     })
-    students.splice(idx, 1, result);
-    var htmls = renderStudent(result);
+    students.splice(idx, 1, edStudent);
+    var htmls = renderStudent(edStudent);
     var studentElement = $('.student-' + idEd);
     if (studentElement) {
         studentElement.replaceWith(htmls);
