@@ -64,9 +64,9 @@ createBtn.click(async function () {
         })
 
         result = result.data;
-        students.push(result);
+        students.push(newSt);
         var ulElement = $('#list-students');
-        ulElement.html(ulElement.html() + renderStudent(result));
+        ulElement.html(ulElement.html() + renderStudent(newSt));
         stName.val('');
         address.val('');
     }
