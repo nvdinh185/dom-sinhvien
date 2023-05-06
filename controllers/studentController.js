@@ -85,7 +85,7 @@ class studentController {
             })
             res.status(200).json(updateStudent);
         } catch (error) {
-            res.send({ "error": error.message });
+            res.status(500).json(error);
         } finally {
             db.close();
         }
