@@ -28,9 +28,9 @@ class studentController {
         try {
             const id = req.params.id;
             const student = await Student.findOne({ id });
-            res.send(student);
+            res.status(200).json(student);
         } catch (error) {
-            res.send({ "error": error.message });
+            res.status(500).json(error);
         }
     }
 
@@ -39,7 +39,7 @@ class studentController {
         try {
             const id = req.params.id;
             const deleteStudent = await Student.findOneAndDelete({ id });
-            res.send(deleteStudent);
+            res.status(200).json(deleteStudent);
         } catch (error) {
             res.status(500).json(error);
         }
@@ -51,9 +51,9 @@ class studentController {
             const id = req.params.id;
             const body = req.body;
             const updateStudent = await Student.findOneAndUpdate({ id }, body);
-            res.send(updateStudent);
+            res.status(200).json(updateStudent);
         } catch (error) {
-            res.send({ "error": error.message });
+            res.status(500).json(error);
         }
     }
 }
