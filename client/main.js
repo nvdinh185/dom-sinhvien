@@ -27,7 +27,7 @@ function renderStudent(student) {
             </li>`
 }
 
-(async function () {
+async function getData() {
     students = await axios.get(studentsApi);
     students = students.data;
 
@@ -38,7 +38,9 @@ function renderStudent(student) {
         htmls += renderStudent(student);
     }
     ulElement.html(htmls);
-})()
+}
+
+getData();
 
 // Xử lý khi kích vào button Thêm
 createBtn.click(async function () {
@@ -156,6 +158,10 @@ async function onDelete(id) {
             url: studentsApi + '/' + id,
             headers: { "Content-Type": "application/json" }
         })
+        var idx = students.findIndex(function (student) {
+            return student.id === id;
+        })
+        students.splice(idx, 1);
         var studentElement = $('.student-' + id);
         if (studentElement) {
             studentElement.remove();

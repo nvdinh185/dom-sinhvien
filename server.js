@@ -1,5 +1,4 @@
 import express from "express";
-import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from 'url';
@@ -11,18 +10,14 @@ import studentRoute from "./routes/route.js";
 
 const app = express();
 dotenv.config();
-app.use(cors());
+app.use(express.json());
 
 const PORT = process.env.PORT;
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-
-const publicPath = path.join(__dirname, "client");
-app.use(express.static(publicPath));
+app.use(express.static(__dirname + "/client"));
 
 app.get("/", (req, res, next) => {
-  res.sendFile(path.join(publicPath, 'index.html'));
+  res.sendFile(__dirname + '/client/index.html');
 });
 
 //ROUTES
