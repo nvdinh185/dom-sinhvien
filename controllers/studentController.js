@@ -23,6 +23,27 @@ class studentController {
         }
     }
 
+    // [GET] /students/:id
+    async getAStudent(req, res) {
+        const id = req.params.id;
+        try {
+            var db = new sqlite3.Database(dbFile);
+            db.serialize();
+            const studentById = await new Promise((resolve, reject) => {
+                db.each(`SELECT * FROM students WHERE id = '${id}'`, (err, row) => {
+                    if (err) reject(err);
+                    resolve(row);
+                })
+            })
+            res.status(200).json(studentById);
+        } catch (err) {
+            console.log(err);
+            res.status(500).json(err);
+        } finally {
+            db.close();
+        }
+    }
+
     // [POST] /students
     async createStudent(req, res) {
         const { id, name, address } = req.body;
