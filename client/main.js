@@ -4,7 +4,6 @@ var createBtn = $('#create');
 var updateBtn = $("#update");
 var stName = $('input[name="name"]');
 var address = $('input[name="address"]');
-var students = [];
 
 function generateUuid() {
     return 'xxxx-xxxx-xxx-xxxx'.replace(/[x]/g, function (c) {
@@ -28,7 +27,7 @@ function renderStudent(student) {
 }
 
 (async function () {
-    students = await axios.get(studentsApi);
+    var students = await axios.get(studentsApi);
     students = students.data;
 
     var ulElement = $('#list-students');
@@ -59,12 +58,11 @@ createBtn.click(async function () {
         var result = await axios({
             method: "POST",
             url: studentsApi,
-            data: JSON.stringify(newSt),
+            data: newSt,
             headers: { "Content-Type": "application/json" },
         })
 
         result = result.data;
-        students.push(result);
         var ulElement = $('#list-students');
         ulElement.html(ulElement.html() + renderStudent(result));
         stName.val('');
@@ -108,9 +106,11 @@ var idEd;
 async function onUpdate(id) {
     idEd = id;
     // tìm sinh viên muốn sửa
-    var student = students.find(function (st) {
-        return st.id === idEd;
-    })
+    var student = await axios({
+        method: "GET",
+        url: studentsApi + "/" + id
+    });
+    student = student.data;
 
     stName.val(student.name);
     address.val(student.address);
@@ -133,10 +133,6 @@ updateBtn.click(async function () {
 
     result = result.data;
 
-    var idx = students.findIndex(function (student) {
-        return student.id === idEd;
-    })
-    students.splice(idx, 1, edStudent);
     var htmls = renderStudent(edStudent);
     var studentElement = $('.student-' + idEd);
     if (studentElement) {
