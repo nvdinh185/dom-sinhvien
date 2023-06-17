@@ -58,7 +58,7 @@ createBtn.onclick = async function () {
         var result = await axios({
             method: "POST",
             url: studentsApi,
-            data: JSON.stringify(newSt),
+            data: newSt,
             headers: { "Content-Type": "application/json" },
         })
 
@@ -128,7 +128,7 @@ updateBtn.onclick = async function () {
     var result = await axios({
         method: "PUT",
         url: studentsApi + "/" + idEd,
-        data: JSON.stringify(student),
+        data: student,
         headers: { "Content-Type": "application/json" },
     })
 
