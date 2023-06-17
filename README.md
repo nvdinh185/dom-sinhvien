@@ -45,4 +45,4 @@ const students = [
 3. Chức năng sửa 1 sinh viên
 4. Chức năng xóa 1 sinh viên
 
-![alt text](image.jpg)
+![](image.jpg)
