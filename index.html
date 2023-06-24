@@ -6,18 +6,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sinh viên</title>
+    <style>
+        .invalid {
+            border: 2px solid red;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 
 <body>
     <div>
         <label>Tên</label>
-        <input type="text" name="name"><br />
+        <input type="text" name="name" class="form-control"><br />
         <span class="form-message"></span>
     </div>
     <br />
     <div>
         <label>Địa chỉ</label>
-        <input type="text" name="address"><br />
+        <input type="text" name="address" class="form-control"><br />
         <span class="form-message"></span>
     </div>
     <div>

@@ -81,10 +81,10 @@ function generateUuid() {
 // Xử lý khi kích vào button Thêm
 createBtn.onclick = function () {
     var check = true;
-    if (validation(stName)) {
+    if (isRequired(stName)) {
         check = false;
     }
-    if (validation(address)) {
+    if (isRequired(address)) {
         check = false;
     }
     if (check) {
@@ -98,6 +98,20 @@ createBtn.onclick = function () {
         ulElement.innerHTML += renderStudent(newSt);
         stName.value = '';
         address.value = '';
+    }
+
+    function isRequired(input) {
+        var errorElement = input.parentElement.querySelector('.form-message');
+        if (input.value.trim() === '') {
+            errorElement.setAttribute('style', 'display: block; color: red; font-style: italic;');
+            errorElement.innerText = 'Yêu cầu nhập!';
+            input.parentElement.querySelector(".form-control").classList.add('invalid');
+            return true;
+        } else {
+            errorElement.setAttribute('style', 'display: none;');
+            input.parentElement.querySelector(".form-control").classList.remove('invalid');
+            return false;
+        }
     }
 }
 
@@ -155,28 +169,19 @@ function onDelete(id) {
 function handleBlurInput(input) {
     var errorElement = input.parentElement.querySelector('.form-message');
     input.onblur = function () {
-        if (input.value === '') {
+        if (input.value.trim() === '') {
             errorElement.setAttribute('style', 'display: block; color: red; font-style: italic;');
             errorElement.innerText = 'Yêu cầu nhập!';
+            input.parentElement.querySelector(".form-control").classList.add('invalid');
         } else {
             errorElement.setAttribute('style', 'display: none;');
+            input.parentElement.querySelector(".form-control").classList.remove('invalid');
         }
     }
-}
 
-function validation(input) {
-    var errorElement = input.parentElement.querySelector('.form-message');
-    if (input.value === '') {
-        Object.assign(errorElement.style, {
-            display: 'block',
-            color: 'red',
-            fontStyle: 'italic'
-        })
-        errorElement.innerText = 'Yêu cầu nhập!';
-        return true;
-    } else {
+    input.oninput = function () {
         errorElement.setAttribute('style', 'display: none;');
-        return false;
+        input.parentElement.querySelector(".form-control").classList.remove('invalid');
     }
 }
 
