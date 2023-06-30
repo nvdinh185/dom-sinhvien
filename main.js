@@ -105,11 +105,11 @@ createBtn.onclick = function () {
         if (input.value.trim() === '') {
             errorElement.setAttribute('style', 'display: block; color: red; font-style: italic;');
             errorElement.innerText = 'Yêu cầu nhập!';
-            input.parentElement.querySelector(".form-control").classList.add('invalid');
+            input.classList.add('invalid');
             return true;
         } else {
             errorElement.setAttribute('style', 'display: none;');
-            input.parentElement.querySelector(".form-control").classList.remove('invalid');
+            input.classList.remove('invalid');
             return false;
         }
     }
@@ -172,16 +172,16 @@ function handleBlurInput(input) {
         if (input.value.trim() === '') {
             errorElement.setAttribute('style', 'display: block; color: red; font-style: italic;');
             errorElement.innerText = 'Yêu cầu nhập!';
-            input.parentElement.querySelector(".form-control").classList.add('invalid');
+            input.classList.add('invalid');
         } else {
             errorElement.setAttribute('style', 'display: none;');
-            input.parentElement.querySelector(".form-control").classList.remove('invalid');
+            input.classList.remove('invalid');
         }
     }
 
     input.oninput = function () {
         errorElement.setAttribute('style', 'display: none;');
-        input.parentElement.querySelector(".form-control").classList.remove('invalid');
+        input.classList.remove('invalid');
     }
 }
 
