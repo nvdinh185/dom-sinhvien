@@ -43,14 +43,19 @@ const students = [
 function render(arrStudents) {
     var ulElement = document.querySelector('#list-students');
 
-    var htmls = '';
-    for (const student of arrStudents) {
-        htmls += `<li>
+    var htmls = arrStudents.map(function (student) {
+        return `<li>
                     <h2>Name: ${student.name}</h2>
                     <p>Address: ${student.address}</p>
                 </li>`
-    }
-    ulElement.innerHTML = htmls;
+    });
+    // for (const student of arrStudents) {
+    //     htmls += `<li>
+    //                 <h2>Name: ${student.name}</h2>
+    //                 <p>Address: ${student.address}</p>
+    //             </li>`
+    // }
+    ulElement.innerHTML = htmls.join('');
 }
 
 render(students);
