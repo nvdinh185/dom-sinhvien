@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import studentController from "../controllers/studentController.js";
+import studentController from "../controllers/StudentController.js";
 
 router.get("/", studentController.getStudents);
 router.get("/:id", studentController.getAStudent);

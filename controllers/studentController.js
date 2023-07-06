@@ -2,7 +2,7 @@ import sqlite from 'sqlite3';
 const sqlite3 = sqlite.verbose();
 const dbFile = './database/students.db';
 
-class studentController {
+class StudentController {
 
     // [GET] /students
     async getStudents(req, res) {
@@ -113,4 +113,4 @@ class studentController {
     }
 }
 
-export default new studentController();
+export default new StudentController();
