@@ -105,7 +105,7 @@ var idEd;
 // Xử lý khi kích vào button Sửa
 async function onUpdate(id) {
     idEd = id;
-    // tìm sinh viên muốn sửa
+    // lấy sinh viên muốn sửa
     var student = await axios({
         method: "GET",
         url: studentsApi + "/" + id
