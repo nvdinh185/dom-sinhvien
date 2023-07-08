@@ -87,7 +87,15 @@ createBtn.onclick = function () {
             address: address.value
         }
         students.push(newSt);
-        render(students);
+        // render(students);
+        var ulElement = document.querySelector('#list-students');
+        var htmls = `
+                <li>
+                    <h2>Name: ${newSt.name}</h2>
+                    <p>Address: ${newSt.address}</p>
+                </li>`
+        ulElement.innerHTML += htmls;
+
         stName.value = '';
         address.value = '';
     }
