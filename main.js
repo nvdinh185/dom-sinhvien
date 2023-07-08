@@ -57,11 +57,10 @@ function renderStudent(student) {
 function render(arrStudents) {
     var ulElement = document.querySelector('#list-students');
 
-    var htmls = '';
-    for (const student of arrStudents) {
-        htmls += renderStudent(student);
-    }
-    ulElement.innerHTML = htmls;
+    var htmls = arrStudents.map(function (student) {
+        return renderStudent(student);
+    });
+    ulElement.innerHTML = htmls.join('');
 }
 
 render(students);
