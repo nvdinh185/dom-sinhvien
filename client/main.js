@@ -26,7 +26,7 @@ function renderStudent(student) {
             </li>`
 }
 
-(async function () {
+async function displaySinhVien() {
     var students = await axios.get(studentsApi);
     students = students.data;
 
@@ -37,7 +37,8 @@ function renderStudent(student) {
         htmls += renderStudent(student);
     }
     ulElement.html(htmls);
-})()
+}
+displaySinhVien();
 
 // Xử lý khi kích vào button Thêm
 createBtn.click(async function () {
