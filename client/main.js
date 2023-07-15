@@ -26,7 +26,7 @@ function renderStudent(student) {
             </li>`
 }
 
-(async function () {
+async function displaySinhVien() {
     var students = await axios.get(studentsApi);
     students = students.data;
 
@@ -37,15 +37,16 @@ function renderStudent(student) {
         htmls += renderStudent(student);
     }
     ulElement.innerHTML = htmls;
-})()
+}
+displaySinhVien();
 
 // Xử lý khi kích vào button Thêm
 createBtn.onclick = async function () {
     var check = true;
-    if (validation(stName)) {
+    if (isRequired(stName)) {
         check = false;
     }
-    if (validation(address)) {
+    if (isRequired(address)) {
         check = false;
     }
     if (check) {
@@ -69,18 +70,16 @@ createBtn.onclick = async function () {
         address.value = '';
     }
 
-    function validation(input) {
+    function isRequired(input) {
         var errorElement = input.parentElement.querySelector('.form-message');
-        if (input.value === '') {
-            Object.assign(errorElement.style, {
-                display: 'block',
-                color: 'red',
-                fontStyle: 'italic'
-            })
+        if (input.value.trim() === '') {
+            errorElement.setAttribute('style', 'display: block; color: red; font-style: italic;');
             errorElement.innerText = 'Yêu cầu nhập!';
+            input.classList.add('invalid');
             return true;
         } else {
             errorElement.setAttribute('style', 'display: none;');
+            input.classList.remove('invalid');
             return false;
         }
     }
@@ -89,12 +88,19 @@ createBtn.onclick = async function () {
 function handleBlurInput(input) {
     var errorElement = input.parentElement.querySelector('.form-message');
     input.onblur = function () {
-        if (input.value === '') {
+        if (input.value.trim() === '') {
             errorElement.setAttribute('style', 'display: block; color: red; font-style: italic;');
             errorElement.innerText = 'Yêu cầu nhập!';
+            input.classList.add('invalid');
         } else {
             errorElement.setAttribute('style', 'display: none;');
+            input.classList.remove('invalid');
         }
+    }
+
+    input.oninput = function () {
+        errorElement.setAttribute('style', 'display: none;');
+        input.classList.remove('invalid');
     }
 }
 
