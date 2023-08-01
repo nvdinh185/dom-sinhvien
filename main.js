@@ -52,12 +52,12 @@ function renderStudent(student) {
 
 /**
  * Render ra mảng sinh viên
- * @param {*} arrStudents 
+ * @param {*} array 
  */
-function render(arrStudents) {
+function render(array) {
     var ulElement = document.querySelector('#list-students');
 
-    var htmls = arrStudents.map(function (student) {
+    var htmls = array.map(function (student) {
         return renderStudent(student);
     });
     ulElement.innerHTML = htmls.join('');
