@@ -38,23 +38,18 @@ const students = [
 
 /**
  * Render ra mảng sinh viên
- * @param {*} arrStudents 
+ * @param {*} array 
  */
-function render(arrStudents) {
+function render(array) {
     var ulElement = document.querySelector('#list-students');
 
-    var htmls = arrStudents.map(function (student) {
+    var htmls = array.map(function (student) {
         return `<li>
                     <h2>Name: ${student.name}</h2>
                     <p>Address: ${student.address}</p>
                 </li>`
     });
-    // for (const student of arrStudents) {
-    //     htmls += `<li>
-    //                 <h2>Name: ${student.name}</h2>
-    //                 <p>Address: ${student.address}</p>
-    //             </li>`
-    // }
+
     ulElement.innerHTML = htmls.join('');
 }
 
