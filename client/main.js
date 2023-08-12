@@ -44,10 +44,10 @@ getData();
 // Xử lý khi kích vào button Thêm
 createBtn.click(async function () {
     var check = true;
-    if (validation(stName)) {
+    if (isRequired(stName)) {
         check = false;
     }
-    if (validation(address)) {
+    if (isRequired(address)) {
         check = false;
     }
     if (check) {
@@ -71,7 +71,7 @@ createBtn.click(async function () {
         address.val('');
     }
 
-    function validation(input) {
+    function isRequired(input) {
         var errorElement = input.parent().children()[3];
         if (input.val() === '') {
             Object.assign(errorElement.style, {
