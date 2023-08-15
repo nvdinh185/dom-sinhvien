@@ -47,6 +47,8 @@ function render(array) {
         return `<li>
                     <h2>Name: ${student.name}</h2>
                     <p>Address: ${student.address}</p>
+                    <button onclick="onUpdate('${student.id}')">Sửa</button>
+                    <button onclick="onDelete('${student.id}')">Xóa</button>
                 </li>`
     });
 
@@ -56,6 +58,7 @@ function render(array) {
 render(students);
 
 var createBtn = document.querySelector('#create');
+var updateBtn = document.querySelector('#update');
 var stName = document.querySelector('input[name="name"]');
 var address = document.querySelector('input[name="address"]');
 
@@ -82,14 +85,7 @@ createBtn.onclick = function () {
             address: address.value
         }
         students.push(newSt);
-        // render(students);
-        var ulElement = document.querySelector('#list-students');
-        var htmls = `
-                <li>
-                    <h2>Name: ${newSt.name}</h2>
-                    <p>Address: ${newSt.address}</p>
-                </li>`
-        ulElement.innerHTML += htmls;
+        render(students);
 
         stName.value = '';
         address.value = '';
@@ -109,3 +105,69 @@ createBtn.onclick = function () {
         }
     }
 }
+
+var idEd;
+// Xử lý khi kích vào button Sửa
+function onUpdate(id) {
+    idEd = id;
+    // tìm sinh viên muốn sửa
+    var student = students.find(function (st) {
+        return st.id === idEd;
+    })
+
+    stName.value = student.name;
+    address.value = student.address;
+
+    createBtn.setAttribute('style', 'display: none');
+    updateBtn.setAttribute('style', 'display: block');
+}
+
+updateBtn.onclick = function () {
+    var student = {
+        id: idEd,
+        name: stName.value,
+        address: address.value
+    }
+    var idx = students.findIndex(function (student) {
+        return student.id === idEd;
+    })
+    students.splice(idx, 1, student);
+    render(students);
+    createBtn.setAttribute('style', 'display: block');
+    updateBtn.setAttribute('style', 'display: none');
+    stName.value = '';
+    address.value = '';
+}
+
+// Xử lý khi kích vào button Xóa
+function onDelete(id) {
+    if (confirm("Bạn có chắc muốn xóa?")) {
+        var idx = students.findIndex(function (student) {
+            return student.id === id;
+        })
+        students.splice(idx, 1);
+        render(students);
+    }
+}
+
+function handleBlurInput(input) {
+    var errorElement = input.parentElement.querySelector('.form-message');
+    input.onblur = function () {
+        if (input.value.trim() === '') {
+            errorElement.setAttribute('style', 'display: block; color: red; font-style: italic;');
+            errorElement.innerText = 'Yêu cầu nhập!';
+            input.classList.add('invalid');
+        } else {
+            errorElement.setAttribute('style', 'display: none;');
+            input.classList.remove('invalid');
+        }
+    }
+
+    input.oninput = function () {
+        errorElement.setAttribute('style', 'display: none;');
+        input.classList.remove('invalid');
+    }
+}
+
+handleBlurInput(stName);
+handleBlurInput(address);
