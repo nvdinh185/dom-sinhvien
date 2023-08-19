@@ -1,16 +1,20 @@
-import sqlite from 'sqlite3';
-const sqlite3 = sqlite.verbose();
-const dbFile = './database/students.db';
+const mysql = require('mysql');
+
+const configDB = {
+    host: "localhost",
+    user: "root",
+    password: "123456",
+    database: "students"
+};
 
 class StudentController {
 
     // [GET] /students
-    async getStudents(req, res) {
+    async getListStudents(req, res) {
         try {
-            var db = new sqlite3.Database(dbFile);
-            db.serialize();
+            var conn = mysql.createConnection(configDB);
             const listStudents = await new Promise((resolve, reject) => {
-                db.all(`SELECT * FROM students`, (err, row) => {
+                conn.query(`SELECT * FROM mystudents`, (err, row) => {
                     if (err) reject(err);
                     resolve(row);
                 })
@@ -19,28 +23,26 @@ class StudentController {
         } catch (err) {
             res.status(500).json(err);
         } finally {
-            db.close();
+            conn.end();
         }
     }
 
     // [GET] /students/:id
-    async getAStudent(req, res) {
+    async getStudentById(req, res) {
         const id = req.params.id;
         try {
-            var db = new sqlite3.Database(dbFile);
-            db.serialize();
+            var conn = mysql.createConnection(configDB);
             const studentById = await new Promise((resolve, reject) => {
-                db.each(`SELECT * FROM students WHERE id = '${id}'`, (err, row) => {
+                conn.query(`SELECT * FROM mystudents WHERE id = '${id}'`, (err, row) => {
                     if (err) reject(err);
                     resolve(row);
                 })
             })
-            res.status(200).json(studentById);
+            res.status(200).json(studentById[0]);
         } catch (err) {
-            console.log(err);
             res.status(500).json(err);
         } finally {
-            db.close();
+            conn.end();
         }
     }
 
@@ -48,10 +50,9 @@ class StudentController {
     async createStudent(req, res) {
         const { id, name, address } = req.body;
         try {
-            var db = new sqlite3.Database(dbFile);
-            db.serialize();
+            var conn = mysql.createConnection(configDB);
             const newStudent = await new Promise((resolve, reject) => {
-                db.run(`INSERT INTO students VALUES (?, ?, ?)`,
+                conn.query(`INSERT INTO mystudents VALUES (?, ?, ?)`,
                     [id, name, address], function (err) {
                         if (err) {
                             reject(new Error(err.message));
@@ -61,20 +62,20 @@ class StudentController {
             });
             res.status(200).json(newStudent);
         } catch (error) {
+            console.log(error);
             res.status(500).json(error);
         } finally {
-            db.close();
+            conn.end();
         }
     }
 
     // [DELETE] /students/:id
     async deleteStudent(req, res) {
         try {
-            var db = new sqlite3.Database(dbFile);
-            db.serialize();
+            var conn = mysql.createConnection(configDB);
             const id = req.params.id;
             const deleteStudent = await new Promise((resolve, reject) => {
-                db.run(`DELETE FROM students WHERE id = ?`, id, function (err) {
+                conn.query(`DELETE FROM mystudents WHERE id = ?`, id, function (err) {
                     if (err) {
                         reject(new Error(err.message));
                     }
@@ -85,18 +86,17 @@ class StudentController {
         } catch (error) {
             res.status(500).json(error);
         } finally {
-            db.close();
+            conn.end();
         }
     }
 
     // [PUT] /students/:id
     async updateStudent(req, res) {
         try {
-            var db = new sqlite3.Database(dbFile);
-            db.serialize();
+            var conn = mysql.createConnection(configDB);
             const { id, name, address } = req.body;
             const updateStudent = await new Promise((resolve, reject) => {
-                db.run(`UPDATE students SET name = ?, address = ? WHERE id = ?`,
+                conn.query(`UPDATE mystudents SET name = ?, address = ? WHERE id = ?`,
                     [name, address, id], function (err) {
                         if (err) {
                             reject(new Error(err.message));
@@ -108,9 +108,9 @@ class StudentController {
         } catch (error) {
             res.status(500).json(error);
         } finally {
-            db.close();
+            conn.end();
         }
     }
 }
 
-export default new StudentController();
+module.exports = new StudentController();
