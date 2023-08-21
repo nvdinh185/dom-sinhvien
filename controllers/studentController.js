@@ -14,7 +14,7 @@ class StudentController {
         try {
             var conn = mysql.createConnection(configDB);
             const listStudents = await new Promise((resolve, reject) => {
-                conn.query(`SELECT * FROM mystudents`, (err, row) => {
+                conn.query(`SELECT * FROM students`, (err, row) => {
                     if (err) reject(err);
                     resolve(row);
                 })
@@ -33,7 +33,7 @@ class StudentController {
         try {
             var conn = mysql.createConnection(configDB);
             const studentById = await new Promise((resolve, reject) => {
-                conn.query(`SELECT * FROM mystudents WHERE id = '${id}'`, (err, row) => {
+                conn.query(`SELECT * FROM students WHERE id = '${id}'`, (err, row) => {
                     if (err) reject(err);
                     resolve(row);
                 })
@@ -52,7 +52,7 @@ class StudentController {
         try {
             var conn = mysql.createConnection(configDB);
             const newStudent = await new Promise((resolve, reject) => {
-                conn.query(`INSERT INTO mystudents VALUES (?, ?, ?)`,
+                conn.query(`INSERT INTO students VALUES (?, ?, ?)`,
                     [id, name, address], function (err) {
                         if (err) {
                             reject(new Error(err.message));
@@ -75,7 +75,7 @@ class StudentController {
             var conn = mysql.createConnection(configDB);
             const id = req.params.id;
             const deleteStudent = await new Promise((resolve, reject) => {
-                conn.query(`DELETE FROM mystudents WHERE id = ?`, id, function (err) {
+                conn.query(`DELETE FROM students WHERE id = ?`, id, function (err) {
                     if (err) {
                         reject(new Error(err.message));
                     }
@@ -96,7 +96,7 @@ class StudentController {
             var conn = mysql.createConnection(configDB);
             const { id, name, address } = req.body;
             const updateStudent = await new Promise((resolve, reject) => {
-                conn.query(`UPDATE mystudents SET name = ?, address = ? WHERE id = ?`,
+                conn.query(`UPDATE students SET name = ?, address = ? WHERE id = ?`,
                     [name, address, id], function (err) {
                         if (err) {
                             reject(new Error(err.message));
