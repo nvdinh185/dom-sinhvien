@@ -59,8 +59,7 @@ createBtn.onclick = async function () {
         var result = await axios({
             method: "POST",
             url: studentsApi,
-            data: newSt,
-            headers: { "Content-Type": "application/json" },
+            data: newSt
         })
 
         result = result.data;
@@ -134,8 +133,7 @@ updateBtn.onclick = async function () {
     var result = await axios({
         method: "PUT",
         url: studentsApi + "/" + idEd,
-        data: student,
-        headers: { "Content-Type": "application/json" },
+        data: student
     })
 
     result = result.data;
@@ -155,8 +153,7 @@ async function onDelete(id) {
     if (confirm("Bạn có chắc muốn xóa?")) {
         await axios({
             method: "DELETE",
-            url: studentsApi + '/' + id,
-            headers: { "Content-Type": "application/json" }
+            url: studentsApi + '/' + id
         })
         var studentElement = document.querySelector('.student-' + id);
         if (studentElement) {
