@@ -1,9 +1,9 @@
-import Student from "../model/student.js";
+const Student = require('../model/student.js');
 
 class StudentController {
 
     // [GET] /students
-    async getStudents(req, res) {
+    async getListStudents(req, res) {
         try {
             const listStudents = await Student.find();
             res.status(200).json(listStudents);
@@ -24,7 +24,7 @@ class StudentController {
     }
 
     // [GET] /students/:id
-    async getAStudent(req, res) {
+    async getStudentById(req, res) {
         try {
             const id = req.params.id;
             const student = await Student.findOne({ id });
@@ -58,4 +58,4 @@ class StudentController {
     }
 }
 
-export default new StudentController();
+module.exports = new StudentController();
