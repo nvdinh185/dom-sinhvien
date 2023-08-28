@@ -1,6 +1,11 @@
 const studentsApi = "http://localhost:3000/students";
 
-var size = 0;
+function generateUuid() {
+    return 'xxxx-xxxx-xxx-xxxx'.replace(/[x]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
 
 async function displaySinhVien() {
     var students = await axios.get(studentsApi);
@@ -38,7 +43,7 @@ createBtn.click(async function () {
     }
     if (check) {
         var newSt = {
-            id: size + 1,
+            id: generateUuid(),
             name: stName.val(),
             address: address.val()
         }
@@ -77,9 +82,16 @@ function handleBlurInput(input) {
         if (input.val() === '') {
             $(errorElement).attr('style', 'display: block; color: red; font-style: italic;');
             $(errorElement).text('Yêu cầu nhập!');
+            input.addClass('invalid');
         } else {
             $(errorElement).attr('style', 'display: none;');
+            input.removeClass('invalid');
         }
+    })
+
+    input.on('input', function () {
+        $(errorElement).attr('style', 'display: none;');
+        input.removeClass('invalid');
     })
 }
 
@@ -128,8 +140,7 @@ async function onDelete(id) {
     if (confirm("Bạn có chắc muốn xóa?")) {
         await axios({
             method: "DELETE",
-            url: studentsApi + '/' + id,
-            headers: { "Content-Type": "application/json" }
+            url: studentsApi + '/' + id
         })
 
         displaySinhVien();
