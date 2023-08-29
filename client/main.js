@@ -1,4 +1,4 @@
-const studentsApi = "http://localhost:3000/students";
+const studentsApi = "http://localhost:3000/student";
 
 var createBtn = $('#create');
 var updateBtn = $("#update");

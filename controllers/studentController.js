@@ -2,58 +2,58 @@ const Student = require('../model/student.js');
 
 class StudentController {
 
-    // [GET] /students
+    // [GET] /student
     async getListStudents(req, res) {
         try {
             const listStudents = await Student.find();
-            res.status(200).json(listStudents);
+            res.status(200).send(listStudents);
         } catch (err) {
-            res.status(500).json(err);
+            res.status(500).send(err);
         }
     }
 
-    // [POST] /students
+    // [POST] /student
     async createStudent(req, res) {
         try {
             const { id, name, address } = req.body;
             const newStudent = await Student.create({ id, name, address });
-            res.status(200).json(newStudent);
+            res.status(200).send(newStudent);
         } catch (error) {
-            res.status(500).json(error);
+            res.status(500).send(error);
         }
     }
 
-    // [GET] /students/:id
+    // [GET] /student/:id
     async getStudentById(req, res) {
         try {
             const id = req.params.id;
             const student = await Student.findOne({ id });
-            res.status(200).json(student);
+            res.status(200).send(student);
         } catch (error) {
-            res.status(500).json(error);
+            res.status(500).send(error);
         }
     }
 
-    // [DELETE] /students/:id
+    // [DELETE] /student/:id
     async deleteStudent(req, res) {
         try {
             const id = req.params.id;
             const deleteStudent = await Student.findOneAndDelete({ id });
-            res.status(200).json(deleteStudent);
+            res.status(200).send(deleteStudent);
         } catch (error) {
-            res.status(500).json(error);
+            res.status(500).send(error);
         }
     }
 
-    // [PUT] /students/:id
+    // [PUT] /student/:id
     async updateStudent(req, res) {
         try {
             const id = req.params.id;
             const body = req.body;
             const updateStudent = await Student.findOneAndUpdate({ id }, body);
-            res.status(200).json(updateStudent);
+            res.status(200).send(updateStudent);
         } catch (error) {
-            res.status(500).json(error);
+            res.status(500).send(error);
         }
     }
 }
