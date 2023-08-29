@@ -19,9 +19,9 @@ class StudentController {
                     resolve(row);
                 })
             })
-            res.status(200).json(listStudents);
+            res.status(200).send(listStudents);
         } catch (err) {
-            res.status(500).json(err);
+            res.status(500).send(err);
         } finally {
             conn.end();
         }
@@ -38,9 +38,9 @@ class StudentController {
                     resolve(row);
                 })
             })
-            res.status(200).json(studentById[0]);
+            res.status(200).send(studentById[0]);
         } catch (err) {
-            res.status(500).json(err);
+            res.status(500).send(err);
         } finally {
             conn.end();
         }
@@ -60,10 +60,10 @@ class StudentController {
                         resolve(this.changes);
                     });
             });
-            res.status(200).json(newStudent);
+            res.status(200).send(newStudent);
         } catch (error) {
             console.log(error);
-            res.status(500).json(error);
+            res.status(500).send(error);
         } finally {
             conn.end();
         }
@@ -82,9 +82,9 @@ class StudentController {
                     resolve(this.changes);
                 });
             })
-            res.status(200).json(deleteStudent);
+            res.status(200).send(deleteStudent);
         } catch (error) {
-            res.status(500).json(error);
+            res.status(500).send(error);
         } finally {
             conn.end();
         }
@@ -104,9 +104,9 @@ class StudentController {
                         resolve(this.changes);
                     });
             })
-            res.status(200).json(updateStudent);
+            res.status(200).send(updateStudent);
         } catch (error) {
-            res.status(500).json(error);
+            res.status(500).send(error);
         } finally {
             conn.end();
         }
