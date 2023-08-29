@@ -10,7 +10,6 @@ function generateUuid() {
 async function displaySinhVien() {
     var students = await axios.get(studentsApi);
     students = students.data;
-    size = students.length;
 
     var ulElement = $('#list-students');
 
@@ -61,17 +60,15 @@ createBtn.click(async function () {
 
     function isRequired(input) {
         var errorElement = input.parent().children()[3];
-        if (input.val() === '') {
+        if (input.val().trim() === '') {
             Object.assign(errorElement.style, {
                 display: 'block',
                 color: 'red',
                 fontStyle: 'italic'
             })
             $(errorElement).text('Yêu cầu nhập!');
+            input.addClass('invalid');
             return true;
-        } else {
-            $(errorElement).attr('style', 'display: none;');
-            return false;
         }
     }
 })
@@ -79,13 +76,10 @@ createBtn.click(async function () {
 function handleBlurInput(input) {
     var errorElement = input.parent().children()[3];
     input.blur(function () {
-        if (input.val() === '') {
+        if (input.val().trim() === '') {
             $(errorElement).attr('style', 'display: block; color: red; font-style: italic;');
             $(errorElement).text('Yêu cầu nhập!');
             input.addClass('invalid');
-        } else {
-            $(errorElement).attr('style', 'display: none;');
-            input.removeClass('invalid');
         }
     })
 
