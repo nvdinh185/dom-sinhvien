@@ -42,10 +42,10 @@ function renderStudent(student) {
 // Xử lý khi kích vào button Thêm
 createBtn.click(async function () {
     var check = true;
-    if (validation(stName)) {
+    if (isRequired(stName)) {
         check = false;
     }
-    if (validation(address)) {
+    if (isRequired(address)) {
         check = false;
     }
     if (check) {
@@ -58,8 +58,7 @@ createBtn.click(async function () {
         var result = await axios({
             method: "POST",
             url: studentsApi,
-            data: newSt,
-            headers: { "Content-Type": "application/json" },
+            data: newSt
         })
 
         result = result.data;
@@ -69,19 +68,17 @@ createBtn.click(async function () {
         address.val('');
     }
 
-    function validation(input) {
+    function isRequired(input) {
         var errorElement = input.parent().children()[3];
-        if (input.val() === '') {
+        if (input.val().trim() === '') {
             Object.assign(errorElement.style, {
                 display: 'block',
                 color: 'red',
                 fontStyle: 'italic'
             })
             $(errorElement).text('Yêu cầu nhập!');
+            input.addClass('invalid');
             return true;
-        } else {
-            $(errorElement).attr('style', 'display: none;');
-            return false;
         }
     }
 })
@@ -89,12 +86,16 @@ createBtn.click(async function () {
 function handleBlurInput(input) {
     var errorElement = input.parent().children()[3];
     input.blur(function () {
-        if (input.val() === '') {
+        if (input.val().trim() === '') {
             $(errorElement).attr('style', 'display: block; color: red; font-style: italic;');
             $(errorElement).text('Yêu cầu nhập!');
-        } else {
-            $(errorElement).attr('style', 'display: none;');
+            input.addClass('invalid');
         }
+    })
+
+    input.on('input', function () {
+        $(errorElement).attr('style', 'display: none;');
+        input.removeClass('invalid');
     })
 }
 
@@ -127,8 +128,7 @@ updateBtn.click(async function () {
     var result = await axios({
         method: "PUT",
         url: studentsApi + "/" + idEd,
-        data: JSON.stringify(edStudent),
-        headers: { "Content-Type": "application/json" },
+        data: edStudent
     })
 
     result = result.data;
@@ -149,8 +149,7 @@ async function onDelete(id) {
     if (confirm("Bạn có chắc muốn xóa?")) {
         await axios({
             method: "DELETE",
-            url: studentsApi + '/' + id,
-            headers: { "Content-Type": "application/json" }
+            url: studentsApi + '/' + id
         })
         var studentElement = $('.student-' + id);
         if (studentElement) {
