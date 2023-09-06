@@ -106,8 +106,6 @@ createBtn.onclick = function () {
             errorElement.innerText = 'Yêu cầu nhập!';
             input.classList.add('invalid');
             return true;
-        } else {
-            return false;
         }
     }
 }
