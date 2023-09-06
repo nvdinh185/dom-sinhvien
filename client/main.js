@@ -60,8 +60,7 @@ createBtn.click(async function () {
         var result = await axios({
             method: "POST",
             url: studentsApi,
-            data: newSt,
-            headers: { "Content-Type": "application/json" },
+            data: newSt
         })
 
         result = result.data;
@@ -82,9 +81,6 @@ createBtn.click(async function () {
             $(errorElement).text('Yêu cầu nhập!');
             input.addClass('invalid');
             return true;
-        } else {
-            $(errorElement).attr('style', 'display: none;');
-            return false;
         }
     }
 })
@@ -96,8 +92,6 @@ function handleBlurInput(input) {
             $(errorElement).attr('style', 'display: block; color: red; font-style: italic;');
             $(errorElement).text('Yêu cầu nhập!');
             input.addClass('invalid');
-        } else {
-            $(errorElement).attr('style', 'display: none;');
         }
     })
 
@@ -136,8 +130,7 @@ updateBtn.click(async function () {
     var result = await axios({
         method: "PUT",
         url: studentsApi + "/" + idEd,
-        data: edStudent,
-        headers: { "Content-Type": "application/json" },
+        data: edStudent
     })
 
     result = result.data;
@@ -158,8 +151,7 @@ async function onDelete(id) {
     if (confirm("Bạn có chắc muốn xóa?")) {
         await axios({
             method: "DELETE",
-            url: studentsApi + '/' + id,
-            headers: { "Content-Type": "application/json" }
+            url: studentsApi + '/' + id
         })
         var studentElement = $('.student-' + id);
         if (studentElement) {
