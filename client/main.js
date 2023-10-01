@@ -1,4 +1,4 @@
-const studentsApi = "http://localhost:3000/students";
+const studentsApi = "http://localhost:3000/student";
 
 function generateUuid() {
     return 'xxxx-xxxx-xxx-xxxx'.replace(/[x]/g, function (c) {
