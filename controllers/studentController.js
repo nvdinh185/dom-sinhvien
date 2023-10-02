@@ -51,18 +51,19 @@ class StudentController {
         const { id, name, address } = req.body;
         try {
             var conn = mysql.createConnection(configDB);
-            const newStudent = await new Promise((resolve, reject) => {
+            await new Promise((resolve, reject) => {
                 conn.query(`INSERT INTO students VALUES (?, ?, ?)`,
                     [id, name, address], function (err) {
                         if (err) {
+                            // console.log('Lỗi: ' + err);
                             reject(new Error(err.message));
                         }
-                        resolve(this.changes);
+                        resolve('OK');
                     });
             });
-            res.status(200).send(newStudent);
+            res.status(200).send('OK');
         } catch (error) {
-            console.log(error);
+            console.log('Lỗi: ' + error);
             res.status(500).send(error);
         } finally {
             conn.end();
@@ -74,15 +75,15 @@ class StudentController {
         try {
             var conn = mysql.createConnection(configDB);
             const id = req.params.id;
-            const deleteStudent = await new Promise((resolve, reject) => {
+            await new Promise((resolve, reject) => {
                 conn.query(`DELETE FROM students WHERE id = ?`, id, function (err) {
                     if (err) {
                         reject(new Error(err.message));
                     }
-                    resolve(this.changes);
+                    resolve('OK');
                 });
             })
-            res.status(200).send(deleteStudent);
+            res.status(200).send("OK");
         } catch (error) {
             res.status(500).send(error);
         } finally {
@@ -95,16 +96,16 @@ class StudentController {
         try {
             var conn = mysql.createConnection(configDB);
             const { id, name, address } = req.body;
-            const updateStudent = await new Promise((resolve, reject) => {
+            await new Promise((resolve, reject) => {
                 conn.query(`UPDATE students SET name = ?, address = ? WHERE id = ?`,
                     [name, address, id], function (err) {
                         if (err) {
                             reject(new Error(err.message));
                         }
-                        resolve(this.changes);
+                        resolve('OK');
                     });
             })
-            res.status(200).send(updateStudent);
+            res.status(200).send('OK');
         } catch (error) {
             res.status(500).send(error);
         } finally {
