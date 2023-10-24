@@ -107,12 +107,12 @@ var idEd;
 function onUpdate(id) {
     idEd = id;
     // tìm sinh viên muốn sửa
-    var student = students.find(function (st) {
+    var edStudent = students.find(function (st) {
         return st.id === idEd;
     })
 
-    stName.value = student.name;
-    address.value = student.address;
+    stName.value = edStudent.name;
+    address.value = edStudent.address;
 
     createBtn.setAttribute('style', 'display: none');
     updateBtn.setAttribute('style', 'display: block');
