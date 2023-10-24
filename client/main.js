@@ -61,11 +61,7 @@ createBtn.click(async function () {
     function isRequired(input) {
         var errorElement = input.parent().children()[3];
         if (input.val().trim() === '') {
-            Object.assign(errorElement.style, {
-                display: 'block',
-                color: 'red',
-                fontStyle: 'italic'
-            })
+            $(errorElement).attr('style', 'display: block; color: red; font-style: italic;');
             $(errorElement).text('Yêu cầu nhập!');
             input.addClass('invalid');
             return true;
@@ -97,18 +93,16 @@ var idEd;
 async function onUpdate(id) {
     idEd = id;
     // lấy sinh viên muốn sửa
-    var student = await axios({
-        method: "GET",
-        url: studentsApi + "/" + id
-    });
-    student = student.data;
+    var edStudent = await axios.get(studentsApi + "/" + id);
+    edStudent = edStudent.data;
 
-    stName.val(student.name);
-    address.val(student.address);
+    stName.val(edStudent.name);
+    address.val(edStudent.address);
     $(updateBtn).attr('style', 'display: block;');
     $(createBtn).attr('style', 'display: none');
 }
 
+// Xử lý sửa sinh viên
 updateBtn.click(async function () {
     var student = {
         id: idEd,
