@@ -103,20 +103,18 @@ var idEd;
 // Xử lý khi kích vào button Sửa
 async function onUpdate(id) {
     idEd = id;
-    // tìm sinh viên muốn sửa
-    var student = await axios({
-        method: "GET",
-        url: studentsApi + "/" + id
-    });
-    student = student.data;
+    // lấy sinh viên muốn sửa
+    var edStudent = await axios.get(studentsApi + "/" + id);
+    edStudent = edStudent.data;
 
-    stName.value = student.name;
-    address.value = student.address;
+    stName.value = edStudent.name;
+    address.value = edStudent.address;
 
     createBtn.setAttribute('style', 'display: none');
     updateBtn.setAttribute('style', 'display: block');
 }
 
+// Xử lý sửa sinh viên
 updateBtn.onclick = async function () {
     var student = {
         id: idEd,
