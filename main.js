@@ -36,32 +36,6 @@ const students = [
     }
 ]
 
-/**
- * Render ra mảng sinh viên
- * @param {*} array 
- */
-function render(array) {
-    var ulElement = document.querySelector('#list-students');
-
-    var htmls = array.map(function (student) {
-        return `<li>
-                    <h2>Name: ${student.name}</h2>
-                    <p>Address: ${student.address}</p>
-                    <button onclick="onUpdate('${student.id}')">Sửa</button>
-                    <button onclick="onDelete('${student.id}')">Xóa</button>
-                </li>`
-    });
-
-    ulElement.innerHTML = htmls.join('');
-}
-
-render(students);
-
-var createBtn = document.querySelector('#create');
-var updateBtn = document.querySelector('#update');
-var stName = document.querySelector('input[name="name"]');
-var address = document.querySelector('input[name="address"]');
-
 function generateUuid() {
     return 'xxxx-xxxx-xxx-xxxx'.replace(/[x]/g, function (c) {
         var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
@@ -69,8 +43,29 @@ function generateUuid() {
     });
 }
 
+function render(array) {
+    var ulElement = $('#list-students');
+
+    var htmls = array.map(function (student) {
+        return `<li>
+            <h2>Name: ${student.name}</h2>
+            <p>Address: ${student.address}</p>
+            <button onclick="onUpdate('${student.id}')">Sửa</button>
+            <button onclick="onDelete('${student.id}')">Xóa</button>
+        </li>`
+    });
+
+    ulElement.html(htmls.join(''));
+}
+render(students);
+
+var createBtn = $('#create');
+var updateBtn = $("#update");
+var stName = $('input[name="name"]');
+var address = $('input[name="address"]');
+
 // Xử lý khi kích vào button Thêm
-createBtn.onclick = function () {
+createBtn.click(function () {
     var check = true;
     if (isRequired(stName)) {
         check = false;
@@ -81,26 +76,45 @@ createBtn.onclick = function () {
     if (check) {
         var newSt = {
             id: generateUuid(),
-            name: stName.value,
-            address: address.value
+            name: stName.val(),
+            address: address.val()
         }
+
         students.push(newSt);
         render(students);
-
-        stName.value = '';
-        address.value = '';
+        stName.val('');
+        address.val('');
     }
 
     function isRequired(input) {
-        var errorElement = input.parentElement.querySelector('.form-message');
-        if (input.value.trim() === '') {
-            errorElement.setAttribute('style', 'display: block; color: red; font-style: italic;');
-            errorElement.innerText = 'Yêu cầu nhập!';
-            input.classList.add('invalid');
+        var errorElement = input.parent().children()[3];
+        if (input.val().trim() === '') {
+            $(errorElement).attr('style', 'display: block; color: red; font-style: italic;');
+            $(errorElement).text('Yêu cầu nhập!');
+            input.addClass('invalid');
             return true;
         }
     }
+})
+
+function handleBlurInput(input) {
+    var errorElement = input.parent().children()[3];
+    input.blur(function () {
+        if (input.val().trim() === '') {
+            $(errorElement).attr('style', 'display: block; color: red; font-style: italic;');
+            $(errorElement).text('Yêu cầu nhập!');
+            input.addClass('invalid');
+        }
+    })
+
+    input.on('input', function () {
+        $(errorElement).attr('style', 'display: none;');
+        input.removeClass('invalid');
+    })
 }
+
+handleBlurInput(stName);
+handleBlurInput(address);
 
 var idEd;
 // Xử lý khi kích vào button Sửa
@@ -111,32 +125,35 @@ function onUpdate(id) {
         return st.id === idEd;
     })
 
-    stName.value = edStudent.name;
-    address.value = edStudent.address;
-
-    createBtn.setAttribute('style', 'display: none');
-    updateBtn.setAttribute('style', 'display: block');
+    stName.val(edStudent.name);
+    address.val(edStudent.address);
+    $(updateBtn).attr('style', 'display: block;');
+    $(createBtn).attr('style', 'display: none');
 }
 
-updateBtn.onclick = function () {
+// Xử lý sửa sinh viên
+updateBtn.click(function () {
     var student = {
         id: idEd,
-        name: stName.value,
-        address: address.value
+        name: stName.val(),
+        address: address.val()
     }
+
     var idx = students.findIndex(function (student) {
         return student.id === idEd;
     })
+
     students.splice(idx, 1, student);
     render(students);
-    createBtn.setAttribute('style', 'display: block');
-    updateBtn.setAttribute('style', 'display: none');
-    stName.value = '';
-    address.value = '';
-}
+
+    $(updateBtn).attr('style', 'display: none;');
+    $(createBtn).attr('style', 'display: block;');
+    stName.val('');
+    address.val('');
+})
 
 // Xử lý khi kích vào button Xóa
-function onDelete(id) {
+async function onDelete(id) {
     if (confirm("Bạn có chắc muốn xóa?")) {
         var idx = students.findIndex(function (student) {
             return student.id === id;
@@ -145,22 +162,3 @@ function onDelete(id) {
         render(students);
     }
 }
-
-function handleBlurInput(input) {
-    var errorElement = input.parentElement.querySelector('.form-message');
-    input.onblur = function () {
-        if (input.value.trim() === '') {
-            errorElement.setAttribute('style', 'display: block; color: red; font-style: italic;');
-            errorElement.innerText = 'Yêu cầu nhập!';
-            input.classList.add('invalid');
-        }
-    }
-
-    input.oninput = function () {
-        errorElement.setAttribute('style', 'display: none;');
-        input.classList.remove('invalid');
-    }
-}
-
-handleBlurInput(stName);
-handleBlurInput(address);
