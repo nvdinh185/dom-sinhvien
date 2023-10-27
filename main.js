@@ -118,6 +118,7 @@ function onUpdate(id) {
     updateBtn.setAttribute('style', 'display: block');
 }
 
+// Xử lý sửa sinh viên
 updateBtn.onclick = function () {
     var student = {
         id: idEd,
@@ -146,6 +147,10 @@ function onDelete(id) {
     }
 }
 
+/**
+ * Hàm để xử lý khi blur hoặc nhập vào ô input
+ * @param {*} input 
+ */
 function handleBlurInput(input) {
     var errorElement = input.parentElement.querySelector('.form-message');
     input.onblur = function () {
