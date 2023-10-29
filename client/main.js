@@ -8,28 +8,34 @@ function generateUuid() {
 }
 
 async function displaySinhVien() {
-    var students = await axios.get(studentsApi);
-    students = students.data;
+    try {
+        var students = await axios.get(studentsApi);
+        students = students.data;
 
-    var ulElement = $('#list-students');
+        var ulElement = $('#list-students');
 
-    var htmls = students.map(function (student) {
-        return `<li>
+        var htmls = students.map(function (student) {
+            return `<li>
             <h2>Name: ${student.name}</h2>
             <p>Address: ${student.address}</p>
             <button onclick="onUpdate('${student.id}')">Sửa</button>
             <button onclick="onDelete('${student.id}')">Xóa</button>
         </li>`
-    });
+        });
 
-    ulElement.html(htmls.join(''));
+        ulElement.html(htmls.join(''));
+    } catch (error) {
+        errorElement.html('<p style="color: red; font-style: italic">Xảy ra lỗi khi lấy dữ liệu!</p>');
+    }
 }
-displaySinhVien();
 
 var createBtn = $('#create');
 var updateBtn = $("#update");
 var stName = $('input[name="name"]');
 var address = $('input[name="address"]');
+var errorElement = $('.error');
+
+displaySinhVien();
 
 // Xử lý khi kích vào button Thêm
 createBtn.click(async function () {
@@ -47,15 +53,19 @@ createBtn.click(async function () {
             address: address.val()
         }
 
-        await axios({
-            method: "POST",
-            url: studentsApi,
-            data: newSt
-        })
+        try {
+            await axios({
+                method: "POST",
+                url: studentsApi,
+                data: newSt
+            })
 
-        displaySinhVien();
-        stName.val('');
-        address.val('');
+            displaySinhVien();
+            stName.val('');
+            address.val('');
+        } catch (error) {
+            errorElement.html('<p style="color: red; font-style: italic">Xảy ra lỗi khi thêm!</p>');
+        }
     }
 
     function isRequired(input) {
@@ -93,13 +103,17 @@ var idEd;
 async function onUpdate(id) {
     idEd = id;
     // lấy sinh viên muốn sửa
-    var edStudent = await axios(studentsApi + "/" + id);
-    edStudent = edStudent.data;
+    try {
+        var edStudent = await axios.get(studentsApi + "/" + id);
+        edStudent = edStudent.data;
 
-    stName.val(edStudent.name);
-    address.val(edStudent.address);
-    $(updateBtn).attr('style', 'display: block;');
-    $(createBtn).attr('style', 'display: none');
+        stName.val(edStudent.name);
+        address.val(edStudent.address);
+        $(updateBtn).attr('style', 'display: block;');
+        $(createBtn).attr('style', 'display: none');
+    } catch (error) {
+        errorElement.html('<p style="color: red; font-style: italic">Xảy ra lỗi khi lấy dữ liệu để sửa!</p>');
+    }
 }
 
 // Xử lý sửa sinh viên
@@ -110,27 +124,35 @@ updateBtn.click(async function () {
         address: address.val()
     }
 
-    await axios({
-        method: "PUT",
-        url: studentsApi + "/" + idEd,
-        data: student
-    })
+    try {
+        await axios({
+            method: "PUT",
+            url: studentsApi + "/" + idEd,
+            data: student
+        })
 
-    displaySinhVien();
-    stName.val('');
-    address.val('');
-    $(updateBtn).attr('style', 'display: none;');
-    $(createBtn).attr('style', 'display: block;');
+        displaySinhVien();
+        stName.val('');
+        address.val('');
+        $(updateBtn).attr('style', 'display: none;');
+        $(createBtn).attr('style', 'display: block;');
+    } catch (error) {
+        errorElement.html('<p style="color: red; font-style: italic">Xảy ra lỗi khi sửa!</p>');
+    }
 })
 
 // Xử lý khi kích vào button Xóa
 async function onDelete(id) {
     if (confirm("Bạn có chắc muốn xóa?")) {
-        await axios({
-            method: "DELETE",
-            url: studentsApi + '/' + id
-        })
+        try {
+            await axios({
+                method: "DELETE",
+                url: studentsApi + '/' + id
+            })
 
-        displaySinhVien();
+            displaySinhVien();
+        } catch (error) {
+            errorElement.html('<p style="color: red; font-style: italic">Xảy ra lỗi khi xóa!</p>');
+        }
     }
 }
