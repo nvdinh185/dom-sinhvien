@@ -15,12 +15,13 @@ async function displaySinhVien() {
         var ulElement = $('#list-students');
 
         var htmls = students.map(function (student) {
-            return `<li>
-            <h2>Name: ${student.name}</h2>
-            <p>Address: ${student.address}</p>
-            <button onclick="onUpdate('${student.id}')">Sửa</button>
-            <button onclick="onDelete('${student.id}')">Xóa</button>
-        </li>`
+            return `
+            <li>
+                <h2>Name: ${student.name}</h2>
+                <p>Address: ${student.address}</p>
+                <button onclick="onUpdate('${student.id}')">Sửa</button>
+                <button onclick="onDelete('${student.id}')">Xóa</button>
+            </li>`
         });
 
         ulElement.html(htmls.join(''));
@@ -71,7 +72,7 @@ createBtn.click(async function () {
     function isRequired(input) {
         var errorElement = input.parent().children()[3];
         if (input.val().trim() === '') {
-            $(errorElement).attr('style', 'display: block; color: red; font-style: italic;');
+            $(errorElement).attr('style', 'color: red; font-style: italic;');
             $(errorElement).text('Yêu cầu nhập!');
             input.addClass('invalid');
             return true;
@@ -83,7 +84,7 @@ function handleBlurInput(input) {
     var errorElement = input.parent().children()[3];
     input.blur(function () {
         if (input.val().trim() === '') {
-            $(errorElement).attr('style', 'display: block; color: red; font-style: italic;');
+            $(errorElement).attr('style', 'color: red; font-style: italic;');
             $(errorElement).text('Yêu cầu nhập!');
             input.addClass('invalid');
         }
