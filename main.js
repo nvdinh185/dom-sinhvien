@@ -70,7 +70,8 @@ function generateUuid() {
 }
 
 // Xử lý khi kích vào button Thêm
-createBtn.onclick = function () {
+createBtn.onclick = function (e) {
+    e.preventDefault();
     var check = true;
     if (isRequired(stName)) {
         check = false;
@@ -119,7 +120,8 @@ function onUpdate(id) {
 }
 
 // Xử lý sửa sinh viên
-updateBtn.onclick = function () {
+updateBtn.onclick = function (e) {
+    e.preventDefault();
     var student = {
         id: idEd,
         name: stName.value,
