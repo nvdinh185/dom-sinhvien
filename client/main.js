@@ -38,7 +38,8 @@ var errorElement = $('.error');
 displaySinhVien();
 
 // Xử lý khi kích vào button Thêm
-createBtn.click(async function () {
+createBtn.click(async function (e) {
+    e.preventDefault();
     var check = true;
     if (isRequired(stName)) {
         check = false;
@@ -117,7 +118,8 @@ async function onUpdate(id) {
 }
 
 // Xử lý sửa sinh viên
-updateBtn.click(async function () {
+updateBtn.click(async function (e) {
+    e.preventDefault();
     var student = {
         id: idEd,
         name: stName.val(),
