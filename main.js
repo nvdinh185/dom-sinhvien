@@ -65,7 +65,8 @@ var stName = $('input[name="name"]');
 var address = $('input[name="address"]');
 
 // Xử lý khi kích vào button Thêm
-createBtn.click(function () {
+createBtn.click(function (e) {
+    e.preventDefault();
     var check = true;
     if (isRequired(stName)) {
         check = false;
@@ -132,7 +133,8 @@ function onUpdate(id) {
 }
 
 // Xử lý sửa sinh viên
-updateBtn.click(function () {
+updateBtn.click(function (e) {
+    e.preventDefault();
     var student = {
         id: idEd,
         name: stName.val(),
