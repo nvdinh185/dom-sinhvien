@@ -1,4 +1,4 @@
-const students = [
+var students = [
     {
         id: '1',
         name: "Dinh",
@@ -141,10 +141,11 @@ updateBtn.onclick = function (e) {
 // Xử lý khi kích vào button Xóa
 function onDelete(id) {
     if (confirm("Bạn có chắc muốn xóa?")) {
-        var idx = students.findIndex(function (student) {
-            return student.id === id;
-        })
-        students.splice(idx, 1);
+        // var idx = students.findIndex(function (student) {
+        //     return student.id === id;
+        // })
+        // students.splice(idx, 1);
+        students = students.filter(std => std.id !== id);
         render(students);
     }
 }
